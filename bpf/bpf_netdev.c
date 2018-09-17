@@ -205,7 +205,7 @@ static inline int handle_ipv6(struct __sk_buff *skb, __u32 src_identity)
 		info = ipcache_lookup6(&cilium_ipcache, src, V6_CACHE_KEY_LEN);
 		if (info != NULL) {
 			__u32 sec_label = info->sec_label;
-			if (sec_label && sec_label != CLUSTER_ID)
+			if (sec_label)
 				src_identity = info->sec_label;
 		}
 		cilium_dbg(skb, info ? DBG_IP_ID_MAP_SUCCEED6 : DBG_IP_ID_MAP_FAILED6,
@@ -384,12 +384,8 @@ static inline int handle_ipv4(struct __sk_buff *skb, __u32 src_identity)
 				 * (passed into this function) reports the src
 				 * as the host. So we can ignore the ipcache
 				 * if it reports the source as HOST_ID.
-				 *
-				 * For compatibility with older versions of
-				 * Cilium, we also ignore CLUSTER_ID.
 				 */
-				if (sec_label != CLUSTER_ID &&
-				    sec_label != HOST_ID)
+				if (sec_label != HOST_ID)
 					src_identity = sec_label;
 			}
 		}

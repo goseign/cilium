@@ -926,7 +926,6 @@ func createNodeConfigHeaderfile() error {
 	fw.WriteString(common.FmtDefineComma("HOST_IP", hostIP))
 	fmt.Fprintf(fw, "#define HOST_ID %d\n", identity.GetReservedID(labels.IDNameHost))
 	fmt.Fprintf(fw, "#define WORLD_ID %d\n", identity.GetReservedID(labels.IDNameWorld))
-	fmt.Fprintf(fw, "#define CLUSTER_ID %d\n", identity.GetReservedID(labels.IDNameCluster))
 	fmt.Fprintf(fw, "#define HEALTH_ID %d\n", identity.GetReservedID(labels.IDNameHealth))
 	fmt.Fprintf(fw, "#define INIT_ID %d\n", identity.GetReservedID(labels.IDNameInit))
 	fmt.Fprintf(fw, "#define LB_RR_MAX_SEQ %d\n", lbmap.MaxSeq)
@@ -971,16 +970,6 @@ func (d *Daemon) syncLXCMap() error {
 		{
 			IP: node.GetIPv6Router(),
 			ID: identity.ReservedIdentityHost,
-		},
-		{
-			IP:   node.GetIPv6ClusterRange().IP,
-			Mask: node.GetIPv6ClusterRange().Mask,
-			ID:   identity.ReservedIdentityCluster,
-		},
-		{
-			IP:   node.GetIPv4ClusterRange().IP,
-			Mask: node.GetIPv4ClusterRange().Mask,
-			ID:   identity.ReservedIdentityCluster,
 		},
 		{
 			IP:   net.IPv4zero,
